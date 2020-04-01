@@ -36,6 +36,7 @@ function detectedReq(request, response) {
 				response.end(JSON.stringify(result));
 			})
 		}
+		return;
 	}
 	
 	if (oUrl.query.getSong) {
@@ -78,10 +79,12 @@ function detectedReq(request, response) {
 							"Access-Control-Allow-Origin": "*"
 						})
 						response.end(fData);
+						return;
 					})
 				})
 			})
 		})
+		return;
 	}
 	
 	if (oUrl.query.getArtist) {
@@ -97,8 +100,10 @@ function detectedReq(request, response) {
 					"Access-Control-Allow-Origin": "*"
 				})
 				response.end(fData);
+				return;
 			})
 		});
+		return;
 	}
 	
 	if (oUrl.query.getAlbum) {
@@ -109,7 +114,13 @@ function detectedReq(request, response) {
 				"Access-Control-Allow-Origin": "*"
 			})
 			response.end(md);
+			return;
 		})
+		return;
 	}
 	
+	response.writeHead(404, {
+		"Access-Control-Allow-Origin": "*"
+	})
+	response.end("invalid request")
 }
