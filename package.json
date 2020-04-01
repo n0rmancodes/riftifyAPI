@@ -1,0 +1,27 @@
+{
+  "name": "riftify",
+  "version": "1.0.0",
+  "description": "legal way to listen to music for free.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n0rmancodes/riftifyAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/n0rmancodes/riftifyAPI/issues"
+  },
+  "homepage": "https://github.com/n0rmancodes/riftifyAPI#readme",
+  "dependencies": {
+    "deezer-node": "^1.0.0",
+    "http": "0.0.1-security",
+    "request": "^2.88.2",
+    "url": "^0.11.0",
+    "ytdl-core": "^2.0.1",
+    "ytsr": "^0.1.12"
+  }
+}
