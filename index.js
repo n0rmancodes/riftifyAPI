@@ -40,6 +40,9 @@ function detectedReq(request, response) {
 	}
 	
 	if (oUrl.query.getSong) {
+		if (oUrl.query.getSong == "NaN") {
+			response.end("err")
+		}
 		req("https://api.deezer.com/track/" + oUrl.query.getSong, function(err,res,body) {
 			var md = JSON.parse(body);
 			var at = md.artist.name;
