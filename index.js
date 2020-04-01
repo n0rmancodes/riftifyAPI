@@ -44,7 +44,7 @@ function detectedReq(request, response) {
 			var md = JSON.parse(body);
 			var at = md.artist.name;
 			console.log(at);
-			var tr = md.title;
+			var tr = md.title_short;
 			console.log(tr);
 			var qu = tr + " " + at + " lyrics";
 			console.log(qu);
