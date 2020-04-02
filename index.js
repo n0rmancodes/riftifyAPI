@@ -47,13 +47,9 @@ function detectedReq(request, response) {
 		req("https://api.deezer.com/track/" + oUrl.query.getSong, function(err,res,body) {
 			var md = JSON.parse(body);
 			var at = md.artist.name;
-			console.log(at);
 			var tr = md.title_short;
-			console.log(tr);
 			var qu = tr + " " + at + " lyrics";
-			console.log(qu);
 			ytsr.getFilters(qu, function(err, filters) {
-				console.log(filters);
 				filter = filters.get('Type').find(o => o.name === 'Video');
 				var options = {
 					limit: 5,
@@ -76,7 +72,8 @@ function detectedReq(request, response) {
 						let formats = ytdl.filterFormats(info.formats, 'audioonly');
 						var fData = JSON.stringify({
 							"metadata": md,
-							"formats": formats
+							"formats": formats,
+							"yId": searchResults.items[0].link.substring(32)
 						})
 						response.writeHead(200, {
 							"Content-Type": "application/json",
