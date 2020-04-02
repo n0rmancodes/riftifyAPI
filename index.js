@@ -43,48 +43,49 @@ function detectedReq(request, response) {
 		if (oUrl.query.getSong == "NaN") {
 			response.end("err");
 			return;
-		}
-		req("https://api.deezer.com/track/" + oUrl.query.getSong, function(err,res,body) {
-			var md = JSON.parse(body);
-			var at = md.artist.name;
-			var tr = md.title_short;
-			var qu = tr + " " + at + " lyrics";
-			ytsr.getFilters(qu, function(err, filters) {
-				filter = filters.get('Type').find(o => o.name === 'Video');
-				var options = {
-					limit: 5,
-					nextpageRef: filter.ref,
-				}
-				ytsr(qu, options, function(err, searchResults) {
-					var url = searchResults.items[0].link;
-					ytdl(url, function(err,info) {
-						if (!info.formats) {
-							var json = JSON.stringify ({
-								"err": "noFormats"
+		} else {
+			req("https://api.deezer.com/track/" + oUrl.query.getSong, function(err,res,body) {
+				var md = JSON.parse(body);
+				var at = md.artist.name;
+				var tr = md.title_short;
+				var qu = tr + " " + at + " lyrics";
+				ytsr.getFilters(qu, function(err, filters) {
+					filter = filters.get('Type').find(o => o.name === 'Video');
+					var options = {
+						limit: 5,
+						nextpageRef: filter.ref,
+					}
+					ytsr(qu, options, function(err, searchResults) {
+						var url = searchResults.items[0].link;
+						ytdl(url, function(err,info) {
+							if (!info.formats) {
+								var json = JSON.stringify ({
+									"err": "noFormats"
+								})
+								response.writeHead(404, {
+									"Content-Type": "application/json",
+									"Access-Control-Allow-Origin": "*"
+								});
+								response.end(json)
+								return;
+							}
+							let formats = ytdl.filterFormats(info.formats, 'audioonly');
+							var fData = JSON.stringify({
+								"metadata": md,
+								"formats": formats,
+								"yId": searchResults.items[0].link.substring(32)
 							})
-							response.writeHead(404, {
+							response.writeHead(200, {
 								"Content-Type": "application/json",
 								"Access-Control-Allow-Origin": "*"
-							});
-							response.end(json)
+							})
+							response.end(fData);
 							return;
-						}
-						let formats = ytdl.filterFormats(info.formats, 'audioonly');
-						var fData = JSON.stringify({
-							"metadata": md,
-							"formats": formats,
-							"yId": searchResults.items[0].link.substring(32)
 						})
-						response.writeHead(200, {
-							"Content-Type": "application/json",
-							"Access-Control-Allow-Origin": "*"
-						})
-						response.end(fData);
-						return;
 					})
 				})
 			})
-		})
+		}
 		return;
 	}
 	
