@@ -57,31 +57,33 @@ function detectedReq(request, response) {
 					}
 					ytsr(qu, options, function(err, searchResults) {
 						var url = searchResults.items[0].link;
-						ytdl(url, function(err,info) {
-							if (!info.formats) {
-								var json = JSON.stringify ({
-									"err": "noFormats"
+						if (!oUrl.query.onlyMeta) {
+							ytdl(url, function(err,info) {
+								if (!info.formats) {
+									var json = JSON.stringify ({
+										"err": "noFormats"
+									})
+									response.writeHead(404, {
+										"Content-Type": "application/json",
+										"Access-Control-Allow-Origin": "*"
+									});
+									response.end(json)
+									return;
+								}
+								let formats = ytdl.filterFormats(info.formats, 'audioonly');
+								var fData = JSON.stringify({
+									"metadata": md,
+									"formats": formats,
+									"yId": searchResults.items[0].link.substring(32)
 								})
-								response.writeHead(404, {
+								response.writeHead(200, {
 									"Content-Type": "application/json",
 									"Access-Control-Allow-Origin": "*"
-								});
-								response.end(json)
+								})
+								response.end(fData);
 								return;
-							}
-							let formats = ytdl.filterFormats(info.formats, 'audioonly');
-							var fData = JSON.stringify({
-								"metadata": md,
-								"formats": formats,
-								"yId": searchResults.items[0].link.substring(32)
 							})
-							response.writeHead(200, {
-								"Content-Type": "application/json",
-								"Access-Control-Allow-Origin": "*"
-							})
-							response.end(fData);
-							return;
-						})
+						}
 					})
 				})
 			})
