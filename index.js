@@ -83,6 +83,17 @@ function detectedReq(request, response) {
 								response.end(fData);
 								return;
 							})
+						} else {
+							var fData = JSON.stringify({
+								"metadata": md,
+								"yId": searchResults.items[0].link.substring(32)
+							})
+							response.writeHead(200, {
+								"Content-Type": "application/json",
+								"Access-Control-Allow-Origin": "*"
+							})
+							response.end(fData);
+							return;
 						}
 					})
 				})
