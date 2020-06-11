@@ -21,7 +21,7 @@
 		"http": "0.0.1-security",
 		"request": "^2.88.2",
 		"url": "^0.11.0",
-		"ytdl-core": "^2.0.1",
+		"ytdl-core": "^2.1.7",
 		"ytsr": "^0.1.12"
 	}
 }
